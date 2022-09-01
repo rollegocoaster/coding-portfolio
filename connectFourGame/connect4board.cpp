@@ -48,12 +48,10 @@ int connect4board::addChip(int col, int player){
     } else {
         nchips++;
         boardState[topIndex[col]][col] = player;
-        //cout << boardState[NROWS-1][col] << endl;
         int result = 0;
         topIndex[col]++;
         if(nchips >= 7)
             result = checkWin(col);
-        //cout << boardState[NROWS-1][col] << endl;
         return result;
 
     }
@@ -68,7 +66,6 @@ int connect4board::checkWin(int col){
     */
    
     int row = topIndex[col];
-    //cout << row << endl;
     if(boardState[row][col] == 0) row--;
     int currPlayer = boardState[row][col];
 
@@ -91,13 +88,11 @@ int connect4board::checkWin(int col){
     if (row>=3){
         numInARow = 0;
         for(int tempRow = row; tempRow>=0; tempRow--){
-            if(boardState[tempRow][col] != currPlayer){
-                //cout << "test" << endl;
-                break;
-            }
-            numInARow ++;
+            if(boardState[tempRow][col] != currPlayer) break;
             
-            //cout << numInARow << " " << tempRow << endl;
+            
+            numInARow ++;
+           
             if(numInARow == 4){
                 return currPlayer;
             }
@@ -142,7 +137,6 @@ int connect4board::checkWin(int col){
         }
         numInARow ++;
         if (numInARow == 4){
-            //cout << "NIAR" <<  numInARow << endl;
             return currPlayer;
         }
     }
@@ -165,3 +159,11 @@ void connect4board::resetBoard(){
     }
     nchips = 0;
 }
+
+
+int connect4board::getBoardVal(int r, int c){
+    return boardState[r%NROWS][c%NCOLS];
+};
+int connect4board::getTopIndexOf(int c){
+    return topIndex[c%NCOLS];
+};

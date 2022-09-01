@@ -8,15 +8,16 @@ class connect4board {
         int nrows = NROWS;
         int ncols = NCOLS;
         int nchips = 0;
+        
         int boardState[NROWS][NCOLS]; // array representing the connct 4 board
         
         int topIndex[NCOLS]; // array representing the lowest available row in each column (to fill)
-        
-        
     public:
         
         connect4board();
         
+        int getBoardVal(int, int);
+        int getTopIndexOf(int);
         void printBoard(); // displays the board in the terminal
 
         int addChip(int, int);
