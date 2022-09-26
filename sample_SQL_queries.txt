@@ -1,0 +1,69 @@
+PROMPT:
+
+Table: Stadium
+
++---------------+---------+
+| Column Name   | Type    |
++---------------+---------+
+| id            | int     |
+| visit_date    | date    |
+| people        | int     |
++---------------+---------+
+visit_date is the primary key for this table.
+Each row of this table contains the visit date and visit id to the stadium with the number of people during the visit.
+No two rows will have the same visit_date, and as the id increases, the dates increase as well.
+ 
+
+Write an SQL query to display the records with three or more rows with consecutive id's, and the number of people is greater than or equal to 100 for each.
+
+Return the result table ordered by visit_date in ascending order.
+
+Queries:
+
+CREATE schema if not exists StadiumDB;
+
+USE StadiumDB;
+
+DROP TABLE IF EXISTS Stadium;
+
+CREATE TABLE IF NOT EXISTS Stadium (
+    id INT NOT NULL,
+    date_visited DATE,
+    people INT
+);
+# create an example database (created with random sample values)
+INSERT INTO Stadium (id, date_visited, people)
+VALUES 
+    ( 1, "2022-10-17", 145), 
+    ( 2, "2022-10-18", 154), 
+    ( 3, "2022-10-19", 173), 
+    ( 4, "2022-10-20",  48), 
+    ( 5, "2022-10-21",  83), 
+    ( 6, "2022-10-22", 111), 
+    ( 7, "2022-10-23",   1), 
+    ( 8, "2022-10-24",  72), 
+    ( 9, "2022-10-25",  30), 
+    (10, "2022-10-26",   5), 
+    (11, "2022-10-27", 172), 
+    (12, "2022-10-28", 172), 
+    (13, "2022-10-29", 159), 
+    (14, "2022-10-30", 103), 
+    (15, "2022-10-31", 152), 
+    (16, "2022-11-01",  18), 
+    (17, "2022-11-02",  40), 
+    (18, "2022-11-03", 121), 
+    (19, "2022-11-04", 112), 
+    (20, "2022-11-05",  98);
+    
+# above queries used to create the Stadium database and fill it with example values 
+
+SELECT * FROM Stadium
+    WHERE people >= 100
+    AND ((id - 1 IN (SELECT id FROM Stadium WHERE people >= 100) AND id - 2 IN (SELECT id FROM Stadium WHERE people >= 100))
+         OR
+         (id + 1 IN (SELECT id FROM Stadium WHERE people >= 100) AND (id + 2 IN (SELECT id FROM Stadium WHERE people >= 100) 
+                                                                      OR 
+                                                                      id - 1 IN (SELECT id FROM Stadium WHERE people >= 100)
+                                                                     )
+         )
+        );
